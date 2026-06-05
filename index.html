@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Desa Tarunajaya • Darmaraja • Sumedang</title>
+  <!-- Font & Icon -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f5f7fb;
+      color: #1e293b;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ============ RUNNING TEXT ============ */
+    .running-banner {
+      background: linear-gradient(135deg, #0f4c2f 0%, #1a6b3c 100%);
+      color: white;
+      padding: 12px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .running-text {
+      display: inline-block;
+      animation: scrollText 22s linear infinite;
+      font-weight: 500;
+      font-size: 1rem;
+      letter-spacing: 0.3px;
+    }
+
+    @keyframes scrollText {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* ============ HEADER & NAVIGASI ============ */
+    .main-header {
+      background: white;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      flex-wrap: wrap;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      font-size: 2.4rem;
+      color: #0f4c2f;
+    }
+
+    .logo-text h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #0f3b24;
+      line-height: 1.2;
+    }
+
+    .logo-text span {
+      font-size: 0.8rem;
+      color: #4b5563;
+      font-weight: 500;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.8rem;
+      font-weight: 600;
+      color: #2d3a4a;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #1e293b;
+      font-size: 0.95rem;
+      transition: 0.2s;
+      padding: 6px 0;
+      border-bottom: 2px solid transparent;
+    }
+
+    .nav-links a:hover {
+      color: #0f4c2f;
+      border-bottom-color: #0f4c2f;
+    }
+
+    /* ============ HERO / SAMBUTAN ============ */
+    .hero-welcome {
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" opacity="0.08"><path d="M0 200 Q150 100 400 200 T800 150 T1200 200 L1200 300 L0 300 Z" fill="%231e5e3c"/></svg>') no-repeat center/cover, #e9f3ec;
+      padding: 40px 0;
+      background-blend-mode: overlay;
+    }
+
+    .welcome-card {
+      background: white;
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+      align-items: center;
+    }
+
+    .welcome-text h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #0f3b24;
+    }
+
+    .welcome-text p {
+      color: #334155;
+      margin: 14px 0;
+      font-size: 1.05rem;
+    }
+
+    .stats-widget {
+      display: flex;
+      gap: 30px;
+      margin-left: auto;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      text-align: center;
+      background: #f0f7f2;
+      border-radius: 20px;
+      padding: 20px 25px;
+      min-width: 120px;
+    }
+
+    .stat-item i {
+      font-size: 2rem;
+      color: #0f4c2f;
+      margin-bottom: 8px;
+    }
+
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #0c3320;
+    }
+
+    /* ============ SECTIONS ============ */
+    section {
+      margin: 50px 0;
+    }
+
+    /* ============ HEADLINE DENGAN BACKGROUND ============ */
+    .section-headline {
+      background: linear-gradient(135deg, #0a2c1a 0%, #0f4c2f 40%, #1a6b3c 100%);
+      color: white;
+      padding: 18px 28px;
+      border-radius: 16px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 6px 18px rgba(15, 76, 47, 0.25);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Ornamen dekoratif di sudut */
+    .section-headline::before {
+      content: '';
+      position: absolute;
+      top: -25px;
+      right: -25px;
+      width: 80px;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 50%;
+    }
+
+    .section-headline::after {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      left: 60px;
+      width: 50px;
+      height: 50px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 50%;
+    }
+
+    .section-headline .headline-icon {
+      font-size: 1.8rem;
+      background: rgba(255, 255, 255, 0.15);
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      flex-shrink: 0;
+      backdrop-filter: blur(4px);
+    }
+
+    .section-headline h2 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    /* ============ GRID & CARD ============ */
+    .grid-2col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+      transition: 0.2s;
+    }
+
+    .card:hover {
+      box-shadow: 0 12px 28px rgba(0,0,0,0.07);
+    }
+
+    /* ============ PETA ============ */
+    .map-container {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+      margin: 20px 0;
+    }
+
+    #map {
+      height: 400px;
+      width: 100%;
+      z-index: 1;
+    }
+
+    /* ============ TABEL DEMOGRAFI ============ */
+    .demografi-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .demografi-table td {
+      padding: 16px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .badge-green {
+      background: #dcfce7;
+      color: #14532d;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+
+    .wisata-img {
+      background: #cbd5e1;
+      height: 180px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #475569;
+      font-weight: 600;
+      margin-bottom: 15px;
+      background: linear-gradient(135deg, #2d5a3b, #4f7a5c);
+      color: white;
+      font-size: 1.1rem;
+    }
+
+    .btn {
+      background: #0f4c2f;
+      color: white;
+      padding: 10px 22px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-block;
+      margin-top: 12px;
+      transition: 0.2s;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #0f4c2f;
+      color: #0f4c2f;
+    }
+
+    .btn:hover {
+      background: #1a6b3c;
+    }
+
+    /* ============ FOOTER ============ */
+    footer {
+      background: #0a2c1a;
+      color: #e2e8f0;
+      padding: 35px 0;
+      margin-top: 60px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    /* ============ RESPONSIF ============ */
+    @media (max-width: 700px) {
+      .header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+      .nav-links {
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      .welcome-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .stats-widget {
+        margin-left: 0;
+      }
+      #map {
+        height: 300px;
+      }
+      .section-headline h2 {
+        font-size: 1.4rem;
+      }
+      .section-headline .headline-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Running Text -->
+  <div class="running-banner">
+    <div class="running-text">
+      🌾 Selamat Datang di Website Resmi Pemerintahan Desa Tarunajaya, Kecamatan Darmaraja, Kabupaten Sumedang • Transparan, Agamis, Maju & Berbasis Digital • 
+    </div>
+  </div>
+
+  <!-- Header Navigasi -->
+  <header class="main-header">
+    <div class="container header-inner">
+      <div class="logo-area">
+        <i class="fas fa-tree logo-icon"></i>
+        <div class="logo-text">
+          <h2>Desa Tarunajaya</h2>
+          <span>Darmaraja • Kab. Sumedang</span>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="#">Beranda</a>
+        <a href="#profil">Profil</a>
+        <a href="#pemerintahan">Pemerintahan</a>
+        <a href="#demografi">Data</a>
+        <a href="#potensi">Potensi</a>
+        <a href="#layanan">Layanan</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- BERANDA : Sambutan & Statistik -->
+    <section id="beranda">
+      <div class="hero-welcome" style="background-color: #f2f7f4; border-radius: 24px; margin-top: 30px;">
+        <div class="welcome-card" style="background: rgba(255,255,255,0.9);">
+          <div class="welcome-text">
+            <h1><i class="fas fa-handshake"></i> Sambutan Kepala Desa</h1>
+            <p><strong>Assalamu'alaikum Wr. Wb.</strong><br>
+            Puji syukur kehadirat Allah SWT, kami hadirkan website resmi Desa Tarunajaya sebagai wujud transparansi digital dan pelayanan prima. Semoga menjadi jembatan informasi antara pemerintah desa dan masyarakat. Kami terus berkomitmen mewujudkan desa yang sejahtera, agamis, dan maju berbasis teknologi.</p>
+            <p><em>- Kepala Desa Tarunajaya</em></p>
+          </div>
+          <div class="stats-widget">
+            <div class="stat-item">
+              <i class="fas fa-users"></i>
+              <div class="stat-number">5.348</div>
+              <div>Jiwa</div>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-home"></i>
+              <div class="stat-number">1.725</div>
+              <div>KK</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROFIL DESA + PETA -->
+    <section id="profil">
+      <!-- HEADLINE DENGAN BACKGROUND -->
+      <div class="section-headline">
+        <div class="headline-icon">
+          <i class="fas fa-landmark"></i>
+        </div>
+        <h2>Profil Desa</h2>
+      </div>
+      
+      <div class="grid-2col">
+        <div class="card">
+          <h3><i class="fas fa-history"></i> Sejarah Desa</h3>
+          <p>Desa Tarunajaya awalnya bagian dari wilayah Desa Sukanagara. Pada tahun 1980-an, Desa Sukanagara dimekarkan menjadi dua: Desa Cieunteung dan <strong>Desa Tarunajaya</strong>. Nama Tarunajaya mencerminkan semangat generasi muda (Taruna) menuju kejayaan (Jaya). Kini desa berkembang menjadi wilayah strategis di pesisir Waduk Jatigede.</p>
+        </div>
+        <div class="card">
+          <h3><i class="fas fa-bullseye"></i> Visi & Misi</h3>
+          <p><span class="badge-green">Visi</span> <strong>"Mewujudkan Desa Tarunajaya yang Sejahtera, Agamis, Maju, dan Transparan Berbasis Digital."</strong></p>
+          <ul style="margin-top: 12px; padding-left: 20px;">
+            <li>Meningkatkan tata kelola pemerintahan digital.</li>
+            <li>Memajukan ekonomi kerakyatan berbasis wisata & perikanan.</li>
+            <li>Memperkuat nilai keagamaan dan budaya lokal.</li>
+            <li>Transparansi APBDes dan pelayanan publik.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3><i class="fas fa-map-marker-alt"></i> Geografis</h3>
+          <p>Terletak di Kecamatan Darmaraja, Kabupaten Sumedang. Wilayah desa bersentuhan langsung dengan area genangan <strong>Waduk Jatigede</strong>, menjadikannya desa pesisir bendungan dengan panorama perairan yang indah. Berbatasan dengan desa sekitar dan memiliki akses strategis ke kawasan wisata Jatigede.</p>
+        </div>
+      </div>
+
+      <!-- PETA -->
+      <div class="map-container" style="margin-top: 30px;">
+        <div style="background: white; padding: 15px 20px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; gap: 10px;">
+          <i class="fas fa-map" style="color: #0f4c2f; font-size: 1.3rem;"></i>
+          <h3 style="font-weight: 700; color: #0f3b24;">📍 Peta Desa Tarunajaya</h3>
+        </div>
+        <div id="map"></div>
+        <div style="background: white; padding: 10px 20px; font-size: 0.8rem; color: #64748b;">
+          <i class="fas fa-info-circle"></i> Koordinat: -6.8152° S, 108.0456° E • Klik marker untuk detail
+        </div>
+      </div>
+    </section>
+
+    <!-- PEMERINTAHAN & KELEMBAGAAN -->
+    <section id="pemerintahan">
+      <!-- HEADLINE DENGAN BACKGROUND -->
+      <div class="section-headline">
+        <div class="headline-icon">
+          <i class="fas fa-sitemap"></i>
+        </div>
+        <h2>Pemerintahan & Kelembagaan</h2>
+      </div>
+      
+      <div class="grid-2col">
+        <div class="card">
+          <h3>Struktur Organisasi</h3>
+          <ul style="list-style: none; padding-left: 0;">
+            <li><strong>Kepala Desa</strong> – (Pjs/Penjabat)</li>
+            <li><strong>Sekretaris Desa</strong> – ...</li>
+            <li>Kaur Keuangan, Kaur Umum</li>
+            <li>Kasi Pemerintahan, Kasi Kesejahteraan</li>
+            <li>Kepala Dusun (Kadus) I, II, III</li>
+          </ul>
+          <p style="font-size:0.9rem; color:#4b5563;">*data nama dapat diperbarui sesuai SK terkini</p>
+        </div>
+        <div class="card">
+          <h3>Lembaga Desa</h3>
+          <p><i class="fas fa-check-circle" style="color:#0f4c2f;"></i> <strong>BPD</strong> – Badan Permusyawaratan Desa</p>
+          <p><i class="fas fa-check-circle" style="color:#0f4c2f;"></i> <strong>LPM</strong> – Lembaga Pemberdayaan Masyarakat</p>
+          <p><i class="fas fa-check-circle" style="color:#0f4c2f;"></i> <strong>PKK</strong> – Pemberdayaan Kesejahteraan Keluarga</p>
+          <p><i class="fas fa-check-circle" style="color:#0f4c2f;"></i> <strong>Karang Taruna</strong></p>
+          <p><i class="fas fa-check-circle" style="color:#0f4c2f;"></i> <strong>RT / RW</strong> se-Desa Tarunajaya</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DATA DEMOGRAFI -->
+    <section id="demografi">
+      <!-- HEADLINE DENGAN BACKGROUND -->
+      <div class="section-headline">
+        <div class="headline-icon">
+          <i class="fas fa-chart-bar"></i>
+        </div>
+        <h2>Data Statistik & Demografi</h2>
+      </div>
+      
+      <div class="card" style="max-width: 700px;">
+        <table class="demografi-table">
+          <tr><td><strong>Total Penduduk</strong></td><td><span class="badge-green">5.348 Jiwa</span></td></tr>
+          <tr><td>👤 Laki-laki</td><td>2.644 jiwa (48.7%)</td></tr>
+          <tr><td>👩 Perempuan</td><td>2.704 jiwa (51.3%)</td></tr>
+          <tr><td>🏠 Total Keluarga</td><td><strong>1.725 Kepala Keluarga (KK)</strong></td></tr>
+          <tr><td>🌾 Mata Pencaharian Utama</td><td>Petani padi, nelayan KJA Waduk Jatigede, UMKM, buruh harian lepas</td></tr>
+        </table>
+        <p style="margin-top: 15px; font-size:0.85rem;">Sumber: Dashboard SAKIP / Desa Cantik Kab. Sumedang (data riil)</p>
+      </div>
+    </section>
+
+    <!-- POTENSI & PARIWISATA -->
+    <section id="potensi">
+      <!-- HEADLINE DENGAN BACKGROUND -->
+      <div class="section-headline">
+        <div class="headline-icon">
+          <i class="fas fa-leaf"></i>
+        </div>
+        <h2>Potensi & Pariwisata Lokal</h2>
+      </div>
+      
+      <div class="grid-2col">
+        <div class="card">
+          <div class="wisata-img">
+            <i class="fas fa-mountain" style="font-size:2rem; margin-right:8px;"></i> Aden Tembong Agung
+          </div>
+          <h3>Wisata Aden Tembong Agung</h3>
+          <p>Destinasi andalan menghadap Waduk Jatigede. Dilengkapi saung, area berkemah, tempat tawasulan, serta nilai sejarah cikal bakal Kerajaan Sumedang Larang (Tembong Agung).</p>
+          <a href="#" class="btn btn-outline">🌐 Jelajahi Wisata</a>
+        </div>
+        <div class="card">
+          <div class="wisata-img" style="background: #2d5a6b;">
+            <i class="fas fa-fish"></i> Perikanan Jatigede
+          </div>
+          <h3>Sektor Perikanan & Wisata Air</h3>
+          <p>Potensi budi daya ikan air tawar (KJA) dan wisata perahu lokal mengelilingi perairan Waduk Jatigede. Menjadi penggerak ekonomi warga.</p>
+          <a href="#" class="btn btn-outline">🎣 Lihat Potensi</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- LAYANAN PUBLIK & TRANSPARANSI -->
+    <section id="layanan">
+      <!-- HEADLINE DENGAN BACKGROUND -->
+      <div class="section-headline">
+        <div class="headline-icon">
+          <i class="fas fa-hand-holding-heart"></i>
+        </div>
+        <h2>Layanan Publik & Transparansi</h2>
+      </div>
+      
+      <div class="grid-2col">
+        <div class="card">
+          <h3><i class="fas fa-file-alt"></i> Layanan Mandiri Surat Digital</h3>
+          <p>• Surat Keterangan Usaha<br>• Surat Pengantar SKCK<br>• Surat Keterangan Tidak Mampu</p>
+          <a href="#" class="btn">🔗 Ajukan Surat Online</a>
+          <p style="font-size:0.8rem; margin-top:12px;">Terintegrasi dengan sistem e-Office Desa.</p>
+        </div>
+        <div class="card">
+          <h3><i class="fas fa-chart-pie"></i> Transparansi APBDes</h3>
+          <p>Grafik realisasi Anggaran Pendapatan dan Belanja Desa (APBDes) tahun berjalan. Masyarakat dapat memantau penggunaan dana desa secara terbuka.</p>
+          <div style="background:#f1f5f9; height:60px; border-radius:12px; display:flex; align-items:center; justify-content:center; margin:15px 0;">
+            📈 [APBDes Realisasi 65%]
+          </div>
+        </div>
+        <div class="card">
+          <h3><i class="fas fa-external-link-alt"></i> Integrasi Sistem Daerah</h3>
+          <p><a href="https://e-officedesa.sumedangkab.go.id/dashboard_simpatik/desa/437" target="_blank" rel="noopener">🌐 E-Office Desa Sumedang</a></p>
+          <p><a href="#" target="_blank">📢 Kanal LAPOR! RI</a></p>
+          <p><a href="https://e-officedesa.sumedangkab.go.id/dashboard_desa_cantik/desa/437" target="_blank">📋 Dashboard Desa Cantik</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p><strong>Pemerintah Desa Tarunajaya</strong> • Kecamatan Darmaraja, Kabupaten Sumedang</p>
+      <p>📞 Kontak Desa | ✉️ tarunajaya@sumedangkab.go.id | Kode Pos 45373</p>
+      <p style="margin-top:12px;">© 2025 Desa Tarunajaya. Dikelola oleh Tim Digital Desa.</p>
+    </div>
+  </footer>
+
+  <!-- Leaflet JavaScript -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var desaCoordinate = [-6.8152, 108.0456];
+      
+      var map = L.map('map').setView(desaCoordinate, 14);
+      
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | Desa Tarunajaya',
+        maxZoom: 19
+      }).addTo(map);
+      
+      var desaIcon = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+      });
+      
+      var markerDesa = L.marker(desaCoordinate, {icon: desaIcon}).addTo(map);
+      markerDesa.bindPopup(`
+        <div style="font-family: 'Inter', sans-serif; min-width: 200px;">
+          <h4 style="margin:0 0 5px 0; color:#0f3b24;">🏡 Desa Tarunajaya</h4>
+          <p style="margin:0; font-size:0.9rem;">Kecamatan Darmaraja<br>Kabupaten Sumedang, Jawa Barat</p>
+          <p style="margin:8px 0 0 0; font-size:0.8rem;">📍 -6.8152, 108.0456</p>
+        </div>
+      `).openPopup();
+      
+      var wadukCoordinate = [-6.8100, 108.0800];
+      var wadukIcon = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+      });
+      
+      var markerWaduk = L.marker(wadukCoordinate, {icon: wadukIcon}).addTo(map);
+      markerWaduk.bindPopup(`
+        <div style="font-family: 'Inter', sans-serif;">
+          <strong>🌊 Waduk Jatigede</strong><br>
+          <span style="font-size:0.8rem;">Area genangan bendungan</span>
+        </div>
+      `);
+      
+      var circle = L.circle(desaCoordinate, {
+        color: '#0f4c2f',
+        fillColor: '#1a6b3c',
+        fillOpacity: 0.15,
+        radius: 1200
+      }).addTo(map);
+      circle.bindPopup('Wilayah administrasi Desa Tarunajaya');
+      
+      var legend = L.control({position: 'bottomright'});
+      legend.onAdd = function(map) {
+        var div = L.DomUtil.create('div', 'info legend');
+        div.style.backgroundColor = 'white';
+        div.style.padding = '8px 12px';
+        div.style.borderRadius = '8px';
+        div.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+        div.style.fontSize = '0.8rem';
+        div.innerHTML = `
+          <strong>Keterangan</strong><br>
+          <span style="color:#0f4c2f;">●</span> Desa Tarunajaya<br>
+          <span style="color:#2563eb;">●</span> Waduk Jatigede<br>
+          <span style="color:#1a6b3c; opacity:0.5;">◯</span> Area desa
+        `;
+        return div;
+      };
+      legend.addTo(map);
+    });
+  </script>
+</body>
+  </html>
